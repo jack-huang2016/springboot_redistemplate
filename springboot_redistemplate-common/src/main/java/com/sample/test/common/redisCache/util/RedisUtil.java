@@ -7,6 +7,9 @@
 package com.sample.test.common.redisCache.util;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.connection.RedisConnectionFactory;
+import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
+import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
@@ -28,6 +31,25 @@ public class RedisUtil {
     private RedisTemplate<String, Object> redisTemplate;
 
     //=============================common============================
+    /**
+     *@描述 切库
+     *@参数  [index]
+     *@返回值  boolean
+     *@创建人  huang.yj
+     *@创建时间  2019/12/4
+     */
+    public boolean select(int index){
+        RedisConnectionFactory requiredConnectionFactory = redisTemplate.getRequiredConnectionFactory();
+        if (requiredConnectionFactory instanceof LettuceConnectionFactory) {
+            ((LettuceConnectionFactory) requiredConnectionFactory).setDatabase(index);
+        } else if (requiredConnectionFactory instanceof JedisConnectionFactory) {
+            ((JedisConnectionFactory) requiredConnectionFactory).setDatabase(index);
+        } else {
+            return false;
+        }
+        return true;
+    }
+
     /**
      * 指定缓存失效时间
      * @param key 键

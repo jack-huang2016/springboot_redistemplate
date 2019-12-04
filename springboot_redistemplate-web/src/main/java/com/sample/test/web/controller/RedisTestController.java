@@ -15,6 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
 import java.time.Duration;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -54,12 +55,17 @@ public class RedisTestController {
     @GetMapping(value = "test")
     public ResponseEntity<String> test(){
         try {
-            // 缓存设置10秒超时
-            redisUtil.set("redisTemplate","这是一条测试数据",10);
-            String value = redisUtil.get("redisTemplate").toString();
-            System.out.println("redisValue=" + value);
-            // 成功，响应200
-            return ResponseEntity.ok(value);
+            boolean flag = redisUtil.select(6);  // 指定存储在哪个redis数据库
+            if(flag){
+                // 缓存设置10秒超时
+                redisUtil.set("redisTemplate","这是一条测试数据",40);
+                String value = redisUtil.get("redisTemplate").toString();
+                System.out.println("redisValue=" + value);
+                // 成功，响应200
+                return ResponseEntity.ok(value);
+            }
+
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("redis数据源切库异常");
         } catch (Exception e) {
             e.printStackTrace();
             // 出错，响应500
