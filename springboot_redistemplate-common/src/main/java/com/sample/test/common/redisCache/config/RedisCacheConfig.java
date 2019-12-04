@@ -7,7 +7,8 @@
 package com.sample.test.common.redisCache.config;
 
 import com.sample.test.common.redisCache.serializer.FastJsonRedisSerializer;
-import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -22,12 +23,11 @@ import org.springframework.data.redis.serializer.StringRedisSerializer;
  * @create 2019/11/25
  * @since 0.0.1
  */
-@Slf4j
 @Configuration
 public class RedisCacheConfig {
-    /**
-     * springboot2.0版本以上默认使用LettuceConnectionFactory
-     */
+
+    private static final Logger logger = LoggerFactory.getLogger(RedisCacheConfig.class);
+
     @Autowired
     private RedisConnectionFactory redisConnectionFactory;
 
@@ -58,7 +58,7 @@ public class RedisCacheConfig {
         template.setDefaultSerializer(fastJsonRedisSerializer);
         template.afterPropertiesSet();
 
-        log.debug("自定义RedisTemplate加载完成");
+        logger.debug("自定义RedisTemplate加载完成");
         return template;
     }
 }
