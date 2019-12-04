@@ -34,15 +34,15 @@ public class RedisProperties {
     @Value("${spring.redis.timeout}")
     private int timeout;
 
-    @Value("${spring.redis.jedis.pool.max-active}")
+    @Value("${spring.redis.lettuce.pool.max-active}")
     private int maxActive;
 
-    @Value("${spring.redis.jedis.pool.max-idle}")
+    @Value("${spring.redis.lettuce.pool.max-idle}")
     private int maxIdle;
 
-    @Value("${spring.redis.jedis.pool.min-idle}")
+    @Value("${spring.redis.lettuce.pool.min-idle}")
     private int minIdle;
 
-    @Value("${spring.redis.jedis.pool.max-wait}")
+    @Value("${spring.redis.lettuce.pool.max-wait}")
     private long maxWait;
 }
