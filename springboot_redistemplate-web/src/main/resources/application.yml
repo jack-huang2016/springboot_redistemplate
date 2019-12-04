@@ -1,0 +1,7 @@
+server:
+  servlet:
+    context-path: /redisTemplateTest
+
+spring:
+  profiles:
+    include: redis
